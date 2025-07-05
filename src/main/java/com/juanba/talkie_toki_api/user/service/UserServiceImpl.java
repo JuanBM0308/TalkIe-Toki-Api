@@ -56,7 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-
+        final var user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found in the database"));
+        user.deactivateUser();
     }
 
     @Override

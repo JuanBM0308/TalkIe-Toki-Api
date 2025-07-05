@@ -41,4 +41,13 @@ public class UserController {
     public ResponseEntity<Page<GetUserResponse>> listUsers(@PageableDefault(sort = {"username"}) Pageable pageable) {
         return ResponseEntity.ok(userService.listUsers(pageable));
     }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    
 }
