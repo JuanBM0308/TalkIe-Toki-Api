@@ -63,6 +63,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UpdateUserRequest updateRequest) {
-        return null;
+        final User user = userRepository.findById(updateRequest.id())
+                .orElseThrow(() -> new IllegalArgumentException("User not found in the database"));
+
+        if (updateRequest.userName() != null) {
+            user.setUsername(updateRequest.userName());
+        }
+
+        if (updateRequest.email() != null) {
+            user.setEmail(updateRequest.email());
+        }
+
+        if (updateRequest.password() != null) {
+            user.setPassword(updateRequest.password());
+        }
+
+        return user;
     }
 }

@@ -1,6 +1,7 @@
 package com.juanba.talkie_toki_api.controllers;
 
 import com.juanba.talkie_toki_api.user.dto.in.RegisterUserRequest;
+import com.juanba.talkie_toki_api.user.dto.in.UpdateUserRequest;
 import com.juanba.talkie_toki_api.user.dto.out.GetUserResponse;
 import com.juanba.talkie_toki_api.user.dto.out.RegisterResponse;
 import com.juanba.talkie_toki_api.user.service.UserServiceImpl;
@@ -49,5 +50,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    
+    @Transactional
+    @PutMapping
+    public ResponseEntity<GetUserResponse> updateUser(@RequestBody @Valid UpdateUserRequest updateRequest) {
+        final var user = userService.updateUser(updateRequest);
+        return ResponseEntity.ok(new GetUserResponse(user));
+    }
+
 }

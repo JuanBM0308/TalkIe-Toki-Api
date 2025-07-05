@@ -2,6 +2,7 @@ package com.juanba.talkie_toki_api.security.config;
 
 import com.juanba.talkie_toki_api.security.config.filter.JwtAuthenticationFilter;
 import com.juanba.talkie_toki_api.util.JwtService;
+import com.juanba.talkie_toki_api.util.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,13 @@ public class HttpSecurityConfig {
                 .authorizeHttpRequests(http -> {
                     // ! Public endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/authenticate").permitAll();
+
+                    // ! User endpoints
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name());
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name());
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name());
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/users").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name(), Role.NORMAL_USER.name());
 
                     http.anyRequest().authenticated();
                 })
