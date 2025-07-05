@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<RegisterResponse> registerUser(@RequestBody @Valid RegisterUserRequest registerUserRequest, UriComponentsBuilder uriComponentsBuilder) {
         final var userSaved = userService.registerUser(registerUserRequest);
-        var uri = uriComponentsBuilder.path("/users/{id}").buildAndExpand(userSaved.getId()).toUri();
+        final var uri = uriComponentsBuilder.path("/users/{id}").buildAndExpand(userSaved.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterResponse(userSaved));
     }
 

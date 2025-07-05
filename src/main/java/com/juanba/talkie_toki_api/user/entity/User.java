@@ -1,5 +1,7 @@
 package com.juanba.talkie_toki_api.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.juanba.talkie_toki_api.comment.entity.Comment;
 import com.juanba.talkie_toki_api.util.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -43,6 +45,11 @@ public class User implements UserDetails {
     private LocalDateTime registerDate;
 
     private boolean isActive;
+
+    // ! Relacion a Comment
+    @JsonIgnore
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Comment> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

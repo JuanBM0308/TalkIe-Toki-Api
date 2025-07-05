@@ -11,7 +11,7 @@ public class InternalServerErrorException {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity internalServerError(Exception exception) {
-        return ResponseEntity.internalServerError().body(new ResponseInternalServerError("Server error 500-01", exception.getLocalizedMessage(), List.of("(Fake) Contact the SunnyBank Support Team at HelpDesk@sunnybank.com", "(Fake) International line 018000475763", "(Fake) Report the error at www.sunny-help-online-assessor.com")));
+        return ResponseEntity.internalServerError().body(new ResponseInternalServerError("Server error 500-01", exception.getLocalizedMessage(), List.of("(Fake) Contact the TalkIe Toki Team at HelpDesk@TalkIeToki.com", "(Fake) International line 018000475763", "(Fake) Report the error at www.talkie-toki-online-assessor.com")));
     }
 
     public record ResponseInternalServerError(
