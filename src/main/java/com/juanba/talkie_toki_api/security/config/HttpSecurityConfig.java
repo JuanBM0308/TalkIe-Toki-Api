@@ -1,7 +1,6 @@
 package com.juanba.talkie_toki_api.security.config;
 
 import com.juanba.talkie_toki_api.security.config.filter.JwtAuthenticationFilter;
-import com.juanba.talkie_toki_api.util.JwtService;
 import com.juanba.talkie_toki_api.util.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +32,12 @@ public class HttpSecurityConfig {
                 .authorizeHttpRequests(http -> {
                     // ! Public endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/authenticate").permitAll();
+
+                    // ! SWAGGER UI AND OPENAPI DOCS
+                    http.requestMatchers("/swagger-ui.html").permitAll();
+                    http.requestMatchers("/swagger-ui/**").permitAll();
+                    http.requestMatchers("/v3/api-docs/**").permitAll();
+                    http.requestMatchers("/webjars/**").permitAll();
 
                     // ! User endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll();

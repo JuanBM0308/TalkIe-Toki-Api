@@ -5,6 +5,8 @@ import com.juanba.talkie_toki_api.user.dto.in.UpdateUserRequest;
 import com.juanba.talkie_toki_api.user.dto.out.GetUserResponse;
 import com.juanba.talkie_toki_api.user.dto.out.RegisterResponse;
 import com.juanba.talkie_toki_api.user.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,18 +35,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<GetUserResponse> getUser(@PathVariable Long id) {
         final var recoveredUser = userService.getUser(id);
         return ResponseEntity.ok(new GetUserResponse(recoveredUser));
     }
 
     @GetMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Page<GetUserResponse>> listUsers(@PageableDefault(sort = {"username"}) Pageable pageable) {
         return ResponseEntity.ok(userService.listUsers(pageable));
     }
 
     @Transactional
     @DeleteMapping("/{id}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
@@ -52,6 +57,7 @@ public class UserController {
 
     @Transactional
     @PutMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<GetUserResponse> updateUser(@RequestBody @Valid UpdateUserRequest updateRequest) {
         final var user = userService.updateUser(updateRequest);
         return ResponseEntity.ok(new GetUserResponse(user));

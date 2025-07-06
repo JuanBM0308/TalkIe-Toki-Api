@@ -4,6 +4,8 @@ import com.juanba.talkie_toki_api.comment.dto.in.CreateCommentRequest;
 
 import com.juanba.talkie_toki_api.comment.dto.out.GetCommentResponse;
 import com.juanba.talkie_toki_api.comment.service.CommentServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ public class CommentController {
 
     @Transactional
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<GetCommentResponse> createComment(@RequestBody @Valid CreateCommentRequest commentRequest, UriComponentsBuilder uriComponentsBuilder) {
         final var commentSaved = commentService.createComment(commentRequest);
         final var uri = uriComponentsBuilder.path("/comments/{id}").buildAndExpand(commentSaved.getId()).toUri();
@@ -32,17 +35,20 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<GetCommentResponse> getComment(@PathVariable Long id) {
         final var recoveredComment = commentService.getComment(id);
         return ResponseEntity.ok(new GetCommentResponse(recoveredComment));
     }
 
     @GetMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Page<GetCommentResponse>> listComments(@PageableDefault(sort = {"date"}) Pageable pageable) {
         return ResponseEntity.ok(commentService.listComments(pageable));
     }
 
     @Transactional
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @DeleteMapping("/{id}")
     public ResponseEntity deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
@@ -50,6 +56,7 @@ public class CommentController {
     }
 
     @Transactional
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @PutMapping("/{id}")
     public ResponseEntity<GetCommentResponse> updateComment(@PathVariable Long id, @RequestBody CreateCommentRequest updateRequest) {
         final var comment = commentService.updateComment(id, updateRequest);
