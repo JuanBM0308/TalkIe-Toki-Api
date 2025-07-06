@@ -4,7 +4,6 @@ import com.juanba.talkie_toki_api.comment.dto.in.CreateCommentRequest;
 import com.juanba.talkie_toki_api.comment.dto.out.GetCommentResponse;
 import com.juanba.talkie_toki_api.comment.entity.Comment;
 import com.juanba.talkie_toki_api.comment.repository.CommentRepository;
-import com.juanba.talkie_toki_api.exceptions.NotFoundException;
 import com.juanba.talkie_toki_api.user.entity.User;
 import com.juanba.talkie_toki_api.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
                 .user(user)
                 .date(LocalDateTime.now())
                 .communityTopic(commentRequest.communityTopic())
+                .isActive(true)
                 .build();
 
         commentRepository.save(comment);
@@ -47,7 +47,38 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Page<GetCommentResponse> listComments(Pageable pageable) {
-        return commentRepository.findAll(pageable)
+        return commentRepository.findAllByIsActiveTrue(pageable)
                 .map(GetCommentResponse::new);
+    }
+
+    @Override
+    public void deleteComment(Long id) {
+        final var comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+        comment.deactivateComment();
+    }
+
+    @Override
+    public Comment updateComment(Long id, CreateCommentRequest updateRequest) {
+        final var comment = commentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
+
+        if (updateRequest.title() != null) {
+            comment.setTitle(updateRequest.title());
+        }
+
+        if (updateRequest.message() != null) {
+            comment.setTitle(updateRequest.message());
+        }
+
+        if (updateRequest.email() != null) {
+            comment.setTitle(updateRequest.email());
+        }
+
+        if (updateRequest.communityTopic() != null) {
+            comment.setTitle(updateRequest.communityTopic().name());
+        }
+
+        return comment;
     }
 }

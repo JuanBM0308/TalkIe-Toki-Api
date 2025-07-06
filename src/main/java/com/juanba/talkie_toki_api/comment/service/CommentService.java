@@ -12,4 +12,8 @@ public interface CommentService {
     Comment getComment(Long id);
 
     Page<GetCommentResponse> listComments(Pageable pageable);
+
+    void deleteComment(Long id);
+
+    Comment updateComment(Long id, CreateCommentRequest updateRequest);
 }

@@ -45,6 +45,8 @@ public class HttpSecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/comments").hasAnyRole(Role.ADMINISTRATOR.name(), Role.NORMAL_USER.name());
                     http.requestMatchers(HttpMethod.GET, "/api/v1/comments/{id}").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name(), Role.NORMAL_USER.name());
                     http.requestMatchers(HttpMethod.GET, "/api/v1/comments").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name(), Role.NORMAL_USER.name());
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/comments/{id}").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name(), Role.NORMAL_USER.name());
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/comments/{id}").hasAnyRole(Role.ADMINISTRATOR.name(), Role.HELP_DESK.name(), Role.NORMAL_USER.name());
 
                     http.anyRequest().authenticated();
                 })

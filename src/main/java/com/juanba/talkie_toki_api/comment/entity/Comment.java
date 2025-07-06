@@ -39,4 +39,10 @@ public class Comment {
     @NotNull
     @Enumerated(EnumType.STRING)
     private CommunityTopic communityTopic;
+
+    private Boolean isActive;
+
+    public void deactivateComment() {
+        isActive = false;
+    }
 }

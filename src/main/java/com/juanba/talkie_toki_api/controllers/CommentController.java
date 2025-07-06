@@ -41,4 +41,19 @@ public class CommentController {
     public ResponseEntity<Page<GetCommentResponse>> listComments(@PageableDefault(sort = {"date"}) Pageable pageable) {
         return ResponseEntity.ok(commentService.listComments(pageable));
     }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteComment(@PathVariable Long id) {
+        commentService.deleteComment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<GetCommentResponse> updateComment(@PathVariable Long id, @RequestBody CreateCommentRequest updateRequest) {
+        final var comment = commentService.updateComment(id, updateRequest);
+        return ResponseEntity.ok(new GetCommentResponse(comment));
+    }
+
 }
